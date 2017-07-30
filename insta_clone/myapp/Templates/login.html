@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>login</title>
+</head>
+
+<body>
+  <div align="center">
+            <h1> Instagram Clone</h1>
+            <h3>Log In</h3>
+    </div>
+
+  <div align="center">
+      <form method="post">
+          {% csrf_token %}
+            <div align="center">
+                <label for="username">Username: </label>
+                <input id="username" type="text" name="username" value={{ username }}>
+            </div>
+            <div align="center">
+                <label for="password">Password: </label>
+                <input id="password" type="password" name="password" value={{ password }}>
+            </div>
+                <input type="submit" value="Log in" onClick="Submit" align="center">
+      </form>
+  </div>
+</body>
+</html>
