@@ -1,13 +1,20 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Instagram Clone</title>
+    <style>
+       h1{
+        font-size= "50px";
+       }
+     </style>
 </head>
-<body>
+<body id = "third">
 	<div class="main" align="center">
-            <h1> Instagram Clone</h1>
+            <h1 font-size= "50px"> Welcome!<br>Instagram Clone</h1>
             <h3>Sign Up</h3>
+            <h2>{{time}}</h2>
     </div>
 
     <div>
@@ -17,21 +24,21 @@
                 <label for="username">Username: </label>
                 <input id="username" type="text" name="username" value={{ username }}>
             </div>
-
+            <br>
             <div align="center">
                 <label for="name">Name: </label>
                 <input id="name" type="text" name="name" value={{ name }}>
             </div>
-
+            <br>
             <div align="center">
                 <label for="email">Email: </label>
                 <input id="email" type="text" name="email" value={{ email }}>
             </div>
-
+            <br>
             <div align="center">
                 <label for="password">Password: </label>
                 <input id="password" type="password" name="password" value={{ password }}>
-            </div>
+            </div><br>
                 <input type="submit" value="Sign Up">
         </form>
 
