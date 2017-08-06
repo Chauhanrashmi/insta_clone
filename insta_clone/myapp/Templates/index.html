@@ -1,50 +1,176 @@
 {% load static %}
 <!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<link href="www.randomlink.com/static/favicon.ico" rel="icon" type="image/x-icon">
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Instagram Clone</title>
+    <link href="{% static 'insta_clone/css/custom.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'insta_clone/css/bootstrap.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'insta_clone/css/font-awesome.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'insta_clone/css/bootstrap.theme.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'insta_clone/js/bootstrap.min.js' %}" rel="stylesheet">
+    <link href="{% static 'insta_clone/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
+    <script href="{% static 'insta_clone/js/bootstrap.js' %}"></script>
+    <script src="{% static 'https://use.fontawesome.com/861373cc11.js' %}"></script>
+    <link href="{% static 'https://fonts.googleapis.com/css?family=Lobster' %}" rel="stylesheet">
+    <link href="{% static 'https://fonts.googleapis.com/css?family=Londrina+Shadow' %}" rel="stylesheet">
     <style>
+       #bg {
+          background-color: rgb(255,153,255);
+          color:white;
+          text-align: center;
+          background-image: url('{% static "/insta_clone/img/wall.jpg"%}');
+          position: absolute;
+          background-size: cover;
+          background-position: top;
+          background-attachment: fixed;
+          font-family: 'Lobster', cursive;
+          font-size: 2opx;
+          margin:20px auto;
+          margin-top: -20px;
+
+           }
+       img{
+          margin:40px 0 0 600px;
+          border: 3px solid white;
+          border-radius:200px;
+          text-align:center;
+          position:relative;
+          vertical-align:middle;
+          display:inline-block;
+        }
        h1{
-        font-size= "50px";
-       }
-     </style>
+           font-size: 70px;
+           font-family:'Londrina Shadow', cursive;
+           margin-top:5px;
+           margin-left: 10px;
+           margin-right:10px;
+           margin-down:10px;
+           padding : 30px;
+        }
+
+        label {
+          position: relative;
+          left: 5px;
+          top: 0;
+          color:white;
+          z-index: 10;
+        }
+
+
+        p{
+           font-size: 25px;
+        }
+
+        h3{
+          font-size: 30px;
+        }
+        input[type="text"]{
+           background-color:transparent;
+           display:block;
+           text-color:black;
+           font-size:25px;
+           border-radius:10px;
+        }
+        input[type="password"]{
+           background-color:transparent;
+           display:block;
+           font-size:25px;
+           border-radius:10px;
+        }
+        input[type="submit"]{
+           color:transparent;
+           font-size:13px;
+          }
+          .btn {
+                border:1px solid white;                           /* borders */
+                color: white;                               /* Add a text color */
+                padding: 14px 28px;                         /* Add some padding */
+                cursor: pointer;                     /* Add a pointer cursor on mouse-over */
+                background-color:transparent;
+                 }
+            .info {background-color: #2196F3;} /* Blue */
+            .info:hover {background: #0b7dda;}
+
+        div{
+            font-size: 20px;
+        }
+        .decoline{
+                  font-size: 20px;
+                  color:white;
+                  margin-bottom:0px;
+                }
+
+            .d-line{
+              display: inline-block;
+              border:1px solid white;
+              width:20%;
+              height:1px;
+              margin-bottom: 10px;
+               color:white;
+            }
+        .containor{
+            text-align:justify;
+        }
+        .head{
+             text-align:justify;
+        }
+    </style>
 </head>
-<body id = "third">
+
+<body id="bg" align="center" >
+  <div class="head" align="center">
+      <img src="{% static "/insta_clone/img/insta4.png" %}" /width="150px" height="150px" align="middle">
+
 	<div class="main" align="center">
-            <h1 font-size= "50px"> Welcome!<br>Instagram Clone</h1>
-            <h3>Sign Up</h3>
+
+            <h1> Instagram</h1>
             <h2>{{time}}</h2>
+            <p> Welcome!Instagram is a mobile desktop and internet based photos sharing applications.See the world through somebody else's eyes by following not only the people you know, but inspirational Instagrammers, photographers, athletes, celebrities and fashion icons. Every time you open Instagram, you'll see new photos and videos from your closest friends, plus breathtaking moments shared by creative people across the globe.<br>can add hashtags,filters and innovative way to interaction</p>
     </div>
 
-    <div>
+    <div align="center" class="container">
+         <h3>Sign Up</h3>
+          <DIV class="decoline">
+          <div class="d-line" > </div>  &#x2666; <div class="d-line"> </div>
+        </DIV>
         <form method="post" align="center">
             {% csrf_token %}
-            <div align="center">
-                <label for="username">Username: </label>
+            <div align="center"><br/>
+                <label for="username">Username:  </label>
                 <input id="username" type="text" name="username" value={{ username }}>
+                </label>                                                              <!--field for username-->
             </div>
             <br>
             <div align="center">
-                <label for="name">Name: </label>
+                <label for="name">Name:   </label>
                 <input id="name" type="text" name="name" value={{ name }}>
+                </label>                                                          <!--field for name-->
             </div>
             <br>
             <div align="center">
                 <label for="email">Email: </label>
-                <input id="email" type="text" name="email" value={{ email }}>
+                <input id="email" type="text" name="email" value={{ email }} >              <!--field for email-->
             </div>
             <br>
             <div align="center">
-                <label for="password">Password: </label>
-                <input id="password" type="password" name="password" value={{ password }}>
-            </div><br>
-                <input type="submit" value="Sign Up">
+                <label for="password">New Password: </label>
+                <input id="password" type="password" name="password" value={{ password }} ><!--field for new password-->
+            </div><br/><br/>
+                <input type="submit" class="btn" style="width:24%; color:black; border-radius:10px;" value="Sign Up">
+                <!--submit button-->
         </form>
-
+      </div>
 
     </div><br><br>
-
-    <div align="center"><h3>Already a user?</h3><a href="login/">Login</a> </div>
+     <DIV class="decoline">
+          <div class="d-line"> </div>  &#x2666; <div class="d-line"> </div>
+        </DIV>
+    <div align="center">
+        <h3>Already a user?</h3>
+        <a href="login/"><button class="btn-success" style="width:24%; color:black;border-radius:10px; font-size:25px;" >Login</button></a>
+    </div>
 </body>
 </html>

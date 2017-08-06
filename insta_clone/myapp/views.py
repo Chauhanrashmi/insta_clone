@@ -1,29 +1,34 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-
 from django.shortcuts import render
-
-# Create your views here.
 import os
 from django.shortcuts import render, redirect
-from forms import SignUpForm, LoginForm, PostForm, LikeForm, CommentForm
-from models import UserModel, SessionToken, PostModel, CommentModel, LikeModel, LoginModel
+from forms import SignUpForm, LoginForm, PostForm, LikeForm, CommentForm                        #import forms
+from models import UserModel, SessionToken, PostModel, CommentModel, LikeModel, LoginModel      #import models
 from django.http import HttpResponse
 from django.contrib.auth.hashers import make_password, check_password
 from datetime import timedelta
 from django.utils import timezone
-from datetime import datetime
+from datetime import datetime                                                                   #import datetime module
 from imgurpython import ImgurClient
-# Create your views
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+from django .contrib import messages
+'''
+import sendgrid
+import os
+from sendgrid.helpers.mail import *
+'''
 
-CLIENT_ID='6a5b377b9218cba'
-CLIENT_SECRET='84433116f9dd74f743003555ebe5d3f5dbde205f'
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))                          #paths inside the project
+CLIENT_ID='6a5b377b9218cba'                                                                     #CLIENT_ID
+CLIENT_SECRET='84433116f9dd74f743003555ebe5d3f5dbde205f'                                        #CLIENT_SECRET
+SENDGRID_API_KEY='SG.Lnyjda8zRf-RHkDYOT_U9A.KMXZ_8hMNMcsSYxP5MokbXu4_xiG66ez81trw-iEo'          #SENDGRID_API_KEY
 
+
+#sinup view starts
 def signup_view(request):
-    if request.method == "POST":
+    if request.method == "POST":                                                               #POST request method
         time = datetime.now()
-        form = SignUpForm(request.POST)
+        form = SignUpForm(request.POST)                                                        #make a POST request
         if form.is_valid():
             username = form.cleaned_data['username']
             name = form.cleaned_data['name']
@@ -31,8 +36,11 @@ def signup_view(request):
             password = form.cleaned_data['password']
             # saving data to DB
             user = UserModel(name=name, password=make_password(password), email=email, username=username)
-            user.save()
+            user.save()           #create a new record in the database
+
+            messages.success(request, "thanks for joining us")
             return render(request, 'success.html')
+
             # return redirect('login/')
     else:
         form = SignUpForm()
@@ -40,44 +48,51 @@ def signup_view(request):
     return render(request, 'index.html', {
         'time':datetime.now(),
         },{'form': form})
+#sinup view ends
 
 
+#login view starts
 def login_view(request):
     response_data = {}
     if request.method == "POST":
         form = LoginForm(request.POST)
         if form.is_valid():
             username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
+            password = form.cleaned_data.get('password')                             # saving data to DB
             user = UserModel.objects.filter(username=username).first()
 
             if user:
-                if check_password(password, user.password):
-                    token = SessionToken(user=user)
+                if check_password(password, user.password):                         #check if a user that exists with the username and password
+                    token = SessionToken(user=user)                                 #create a session for the user
                     token.create_token()
                     token.save()
-                    response = redirect('/feed/')
-                    response.set_cookie(key='session_token', value=token.session_token)
+                    response = redirect('/feed/')                                   # send the user to the /feeds/ page after log in
+                    response.set_cookie(key='session_token', value=token.session_token)#insert the session id inside the cookie
                     return response
                 else:
-                    response_data['message'] = 'Incorrect Password! Please try again!'
+                    response_data['message'] = 'Incorrect Password! Please try again!'  #error message
+            else:
+                     return HttpResponse("Invalid Login details")
 
     elif request.method == 'GET':
         form = LoginForm()
 
+
     response_data['form'] = form
-    return render(request, 'login.html', response_data)
+    return render(request,'login.html',response_data)                              #request to login page
+#login view ends
 
 
+#post_view starts
 def post_view(request):
-    user = check_validation(request)
+    user = check_validation(request)                                                 #check validation for username and password
 
     if user:
         if request.method == 'POST':
             form = PostForm(request.POST, request.FILES)
             if form.is_valid():
                 image = form.cleaned_data.get('image')
-                caption = form.cleaned_data.get('caption')
+                caption = form.cleaned_data.get('caption')                                  # saving data to DB
                 post = PostModel(user=user, image=image, caption=caption)
                 post.save()
 
@@ -88,14 +103,17 @@ def post_view(request):
                 post.image_url = client.upload_from_path(path,anon=True)['link']
                 post.save()
 
-                return redirect('/feed/')
+                return redirect('/feed/')                                                  #redirect to feed page
 
         else:
             form = PostForm()
         return render(request, 'post.html', {'form' : form})
     else:
-        return redirect('/login/')
+        return redirect('/login/')                                                        #redirect to login page
+#post_view ends
 
+
+#feed_view starts
 def feed_view(request):
     user = check_validation(request)
     if user:
@@ -111,8 +129,11 @@ def feed_view(request):
         print"feed page"
     else:
 
-        return redirect('/login/')
+        return redirect('/login/')                                                  #redirect to login page
+#feed_view starts
 
+
+#like_view starts
 def like_view(request):
     user = check_validation(request)
     if user and request.method == 'POST':
@@ -122,31 +143,37 @@ def like_view(request):
             existing_like = LikeModel.objects.filter(post_id=post_id, user=user).first()
             if not existing_like:
                 LikeModel.objects.create(post_id=post_id, user=user)
+
             else:
                 existing_like.delete()
-            return redirect('/feed/')
+            return redirect('/feed/')                                             #redirect to feed page
     else:
-        return redirect('/login/')
+        return redirect('/login/')                                                #redirect to login page
+#like_view ends
 
+
+#comment_view starts
 def comment_view(request):
     user = check_validation(request)
     if user and request.method == 'POST':
         form = CommentForm(request.POST)
         if form.is_valid():
-            post_id = form.cleaned_data.get('post').id
-            comment_text = form.cleaned_data.get('comment_text')
+            post_id = form.cleaned_data.get('post').id                                       # saving data to DB
+            comment_text = form.cleaned_data.get('comment_text')                             # saving data to DB
             comment = CommentModel.objects.create(user=user, post_id=post_id, comment_text=comment_text)
             comment.save()
-            return redirect('/feed/')
+
+            # email sending part ends
+            return redirect('/feed/')                                                       #redirect to feed page
         else:
-            return redirect('/feed/')
+            return redirect('/feed/')                                                       #redirect to feed page
     else:
-        return redirect('/login')
+        return redirect('/login')                                                           #redirect to login page
+# comment_view ends
 
 
 
-
-#For validating the session
+#For validating the session or check validation
 def check_validation(request):
     if request.COOKIES.get('session_token'):
         session = SessionToken.objects.filter(session_token=request.COOKIES.get('session_token')).first()
@@ -156,3 +183,5 @@ def check_validation(request):
                 return session.user
     else:
         return None
+
+

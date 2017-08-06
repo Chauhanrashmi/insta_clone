@@ -1,13 +1,36 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Post</title>
+    <link href="{% static 'https://fonts.googleapis.com/css?family=Londrina+Shadow' %}" rel="stylesheet">
+    <style>
+        div{
+          top-margin:400px;
+          text-align:center;
+          font-family:'Londrina Shadow', cursive;
+          font-size:40px;
+          color:black;
+        }
+        h1{
+         font-size:70px;
+          font-family:'Londrina Shadow', cursive;
+        }
+        input[type="text" name="caption"]{
+           width:200px;
+           height: 30px;
+        }
+    </style>
 </head>
-<body>
+<body style="background-image: url('{% static "/insta_clone/img/new2.jpg"%}')";>
+ <div>
     <form method="post" enctype="multipart/form-data">
+        <h1>Add Post Now</h1>
+        <p>Please select the file you would like to upload.<br/><br/><br/>
         {% csrf_token %}
         {{form}}
-        <input type="submit" class="btn-default btn" value="Add a Picture">
+        <input type="submit" class="btn-default btn" value="Add a Picture" style="border-radius:40px; height:30px; length:80px;"><br>
     </form>
+ </div>
 </body>

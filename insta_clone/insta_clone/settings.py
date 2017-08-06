@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
+import os.path
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -21,6 +22,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '=x1^o(dw_80m!ovrh)_05g0=^i!5r!xowd02t8_xndle6e=(e8'
+
+
+#SENDGRID_API_KEY = 'SG.Lnyjda8zRf-RHkDYOT_U9A.KMXZ_8hMNMcsSYxP5MokbXu4_xiG66ez81trw-iEo'
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -123,3 +128,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = [ os.path.join(BASE_DIR, "static"), ]
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = [ os.path.join(BASE_DIR, "media"), ]

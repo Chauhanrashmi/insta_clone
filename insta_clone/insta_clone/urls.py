@@ -19,7 +19,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from myapp.views import signup_view, login_view, feed_view, post_view, like_view, comment_view
 
-
+#urls for views
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^post/', post_view),
@@ -31,3 +31,5 @@ urlpatterns = [
 ]
 
 
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

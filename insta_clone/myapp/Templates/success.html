@@ -1,14 +1,51 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Success</title>
-
+    <link href="{% static 'https://fonts.googleapis.com/css?family=Lobster' %}" rel="stylesheet">
+    <style>
+        #bg{
+          background-color: rgb(255,153,255);
+          text-align: center;
+          background-image: url('{% static "/insta_clone/img/wall1.png"%}');
+          background-repeat:no-repeat;
+          position:relative;
+          background-size: cover;
+          color:white;
+          }
+          h1{
+          font-size:50px;
+          font-family: 'Lobster', cursive;
+          color:white;
+          margin-top:10px;
+          }
+          input[type="submit"]{
+           color:transparent;
+           font-size:25px;
+          }
+          .btn {
+                border:1px solid white;                           /* borders */
+                color: white;                               /* Add a text color */
+                padding: 14px 28px;                         /* Add some padding */
+                cursor: pointer;                     /* Add a pointer cursor on mouse-over */
+                background-color:transparent;
+                 }
+            .info {background-color: #2196F3;} /* Blue */
+            .info:hover {background: #0b7dda;}
+    </style>
 </head>
-<body align="center"><br><br>
-    Successfully signed up! <br> Please continue to login!
+<body id="bg" style="text-align:center;"><br><br>
+    <h1>Congrates!<br/>Successfully signed up! <br> Please login to enjoy instagram features!</h1> <br><br>          <!--confirmation message-->
     <form action="/login/" method="get" align="center">
-        <input type="submit" class="btn btn-default" value="Login">
-    </form>
+        <input type="submit" class="btn" style="width:25%; color:black; border-radius:10px;" value="Login">  <!--redirect the user to the login page.-->
+    </form><br/>
+
+<div>
+       <img src="{% static "/insta_clone/img/insta5.png" %}" /width="300px" height="180px">
+       <img src="{% static "/insta_clone/img/best.jpg" %}" /width="300px" height="180px"
+ </div>
+
 </body>
 </html>

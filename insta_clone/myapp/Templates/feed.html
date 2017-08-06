@@ -1,42 +1,132 @@
+{% load staticfiles %}
 <!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<link href="www.randomlink.com/static/favicon.ico" rel="icon" type="image/x-icon">
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Feed</title>
+    <link href="{% static 'insta_clone/css/custom.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'insta_clone/css/bootstrap.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'insta_clone/css/font-awesome.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'insta_clone/css/bootstrap.theme.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'insta_clone/js/bootstrap.min.js' %}" rel="stylesheet">
+    <link href="{% static 'insta_clone/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
+    <script href="{% static 'insta_clone/js/bootstrap.js' %}"></script>
+    <script src="{% static 'https://use.fontawesome.com/861373cc11.js' %}"></script>
+    <link href="{% static 'https://fonts.googleapis.com/css?family=Lobster' %}" rel="stylesheet">
+    <link href="{% static 'https://fonts.googleapis.com/css?family=Londrina+Shadow' %}" rel="stylesheet">
+    <link href="{% static 'https://fonts.googleapis.com/css?family=Roboto' %}" rel="stylesheet">
+    <style>
+         h3{
+          font-size:35px;
+           font-family:'Londrina Shadow', cursive;
+         }
+         p{
+          font-size:25px;
+           font-family:'Londrina Shadow', cursive;
+         }
+         i{
+           font-size:25px;
+          }
+          a{
+            font-family: 'Roboto', sans-serif;
+          }
+         #bg{
+              background-image: url('{% static "/insta_clone/img/new2.jpg"%}');
+         }
+        #header{
+          text-align: center;
+          margin:20px auto;
+          margin-top: -10px;
+          background-size: cover;
+          }
+        .nav-pills li{
+              float:none;
+              display: inline-block;
+              zoom:1;
+            }
+            .nav-pills{
+              text-align: center;
+            }
+         .head{
+              margin-top:100px;
+             }
+          #CREATE POST{
+              text-align: center;
+              margin-top: 30px;
+              margin:0px 3%;
+            }
+           .btn {
+                border: none; /* Remove borders */
+                color: white; /* Add a text color */
+                padding: 14px 28px; /* Add some padding */
+                cursor: pointer; /* Add a pointer cursor on mouse-over */
+                 }
+            .info {background-color: #2196F3;} /* Blue */
+            .info:hover {background: #0b7dda;}
+    </style>
 </head>
 
-<body align="center">
-    <form method="post" action="/post/" align="center">
-        {% csrf_token %}
-        <input type="submit" class="btn-default btn" value="Create Post">
-    </form>
-  {% for post in posts %}
+<body id="bg" align="center" >
+<nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span><span class="icon-bar"></span>
+      </button>
+        <a class="navbar-brand" href="#">INSTACLONE</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav navbar-right">
+            <li class="active"><a href="#header">HOME</a></li>
+            <li><a href="#SEARCH">SEARCH</a></li>
+            <li><a href="#GALLERY">GALLERY</a></li>
+            <li><a href="#FOLLOWING">FOLLOWING</a></li>
+            <li><a href="#PROFILE">PROFILE</a></li>
+            <li><a href="#STORY">STORY</a></li>
+            <li>
+            <section id="CREATE POST">
+            <form method="post" action="/post/" align="center">
+                {% csrf_token %}
+                <input type="submit" class="btn btn default" value="Create a new Post" style="border-radius:40px; color:black;">
+           </form>
+            </section></li>
+       </ul>
+    </div>
+  </div>
+</nav>
+<div>
+
+
+  <div class="head">
+  {% for post in posts reversed %}
         <h3 align="center"> Posted by: {{ post.user.username }} </h3>
         <p align="center">[{{ post.created_on }}]</p>
-        <img src="{{ post.image_url }}" /><br>
+        <img src="{{ post.image_url }} height="450px" width="550px" "><br>
         <span  style="display:inline-block; align:center;">{{ post.caption }}</span><br/><br/>
         <div style="display:inline-block align:center;" >
-            {{ post.like_count }} likes this
+            {{ post.like_count }} likes
         </div>
         <div style="display:inline-block align:center;">
             <form method="POST" action="/like/" align="center">
               {% csrf_token %}
               <input type="hidden" name="post" value="{{ post.id }}" />
                 {% if post.has_liked %}
-                <input type="submit" class="btn btn-default" value="Unlike">
+                <input type="submit" class="btn btn primary" value="Unlike" style="border-radius:30px;">
                 {% else %}
-                <input type="submit" class="btn btn-default" value="Like">
+                <input type="submit" class="btn info" value="Like" style="border-radius:30px;">
                 {% endif %}
-            </form>
+            </form><br/>
         </div>
 
         <div align="center">
             <form method="POST" action="/comment/" align="center">
                 {% csrf_token %}
                 <input type="hidden" name="post" value="{{ post.id }}" />
-                <input type="text" name="comment_text" id="comment_text" placeholder="Make a comment.." value="{{ comment_text }}">
+                <input type="text" name="comment_text" id="comment_text" placeholder="  Make a comment.." value="{{ comment_text }}" style="border-radius:10px; height:40px; width:150px;">
                 {{ comment_text }}
-                <input type="submit" class="btn-default btn" value="Comment">
+                <input type="submit" class="btn info" value="Comment" style="border-radius:20px;">
             </form>
         </div>
 
@@ -44,7 +134,9 @@
             {% for comment in post.comments %}
                 <p><b>{{ comment.user.username }} [{{ comment.created_on }}]:</b> {{ comment.comment_text }}</p>
             {% endfor %}
-        </div>
+        </div><br/><br/>
    {% endfor %}
+  </div>
+ </div>
 </body>
 </html>

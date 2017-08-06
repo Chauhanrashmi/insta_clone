@@ -1,29 +1,94 @@
+{% load staticfiles %}
 <!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<link href="www.randomlink.com/static/favicon.ico" rel="icon" type="image/x-icon">
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>login</title>
+    <style>
+        #bg{
+          background-color: rgb(255,153,255);
+          text-align: center;
+          background-image: url('{% static "/insta_clone/img/wall2.png"%}');
+          background-repeat:no-repeat;
+          position:relative;
+          background-size: cover;
+          color:white;
+          }
+           h1{
+          font-size:70px;
+          font-family: 'Lobster', cursive;
+          color:white;
+          }
+           h3{
+          font-size:40px;
+          font-family: 'Lobster', cursive;
+          color:white;
+          }
+          label {
+          font-family: 'Lobster', cursive;
+          font-size:30px;
+          position: relative;
+          left: 5px;
+          top: 0;
+          color:white;
+          z-index: 10;
+        }
+           input[type="text"]{
+           background-color:transparent;
+           display:block;
+           font-family: 'Lobster', cursive;
+           text-color:white;
+           font-size:30px;
+           border-radius:10px;
+          }
+           input[type="password"]{
+           background-color:transparent;
+           display:block;
+           font-size:30px;
+           border-radius:10px;
+           text-color:white;
+        }
+          input[type="submit"]{
+           color:transparent;
+           font-size:13px;
+           font-family: 'Lobster', cursive;
+          }
+          .btn {
+                border:1px solid white;                           /* borders */
+                color: white;                               /* Add a text color */
+                padding: 14px 28px;                         /* Add some padding */
+                cursor: pointer;                     /* Add a pointer cursor on mouse-over */
+                background-color:transparent;
+                }
+            .info {background-color: #2196F3;} /* Blue */
+            .info:hover {background: #0b7dda;}
+
+    </style>
 </head>
 
-<body>
+<body id="bg">
   <div align="center">
-            <h1> Instagram Clone</h1>
+            <h1> Instagram</h1>
             <h3>Log In</h3>
     </div>
 
-  <div align="center">
-      <form method="post">
-          {% csrf_token %}
-            <div align="center">
-                <label for="username">Username: </label>
-                <input id="username" type="text" name="username" value={{ username }}>
-            </div>
-            <div align="center">
-                <label for="password">Password: </label>
-                <input id="password" type="password" name="password" value={{ password }}>
-            </div>
-                <input type="submit" value="Log in" onClick="Submit" align="center">
-      </form>
-  </div>
+          <div align="center">
+              <form method="post">
+                  {% csrf_token %}
+                    <div align="center">
+                        <label for="username">Username: </label>
+                        <input id="username" type="text" name="username" value={{ username }}><!--field for username-->
+                    </div><br/>
+                    <div align="center">
+                        <label for="password">Password: </label>
+                        <input id="password" type="password" name="password" value={{ password }}><!--field for password-->
+                    </div><br/><br/>
+                        <input type="submit" value="Log in" onClick="Submit" align="center" class="btn" style="width:25%; color:white; border-radius:10px;"><!--submit button-->
+              </form>
+         </div>
+
+
 </body>
 </html>
