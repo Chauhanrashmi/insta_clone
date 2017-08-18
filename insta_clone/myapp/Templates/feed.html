@@ -1,7 +1,6 @@
 {% load staticfiles %}
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<link href="www.randomlink.com/static/favicon.ico" rel="icon" type="image/x-icon">
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -14,6 +13,7 @@
     <link href="{% static 'insta_clone/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
     <script href="{% static 'insta_clone/js/bootstrap.js' %}"></script>
     <script src="{% static 'https://use.fontawesome.com/861373cc11.js' %}"></script>
+    <script src="{% static 'https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js' %}"></script>
     <link href="{% static 'https://fonts.googleapis.com/css?family=Lobster' %}" rel="stylesheet">
     <link href="{% static 'https://fonts.googleapis.com/css?family=Londrina+Shadow' %}" rel="stylesheet">
     <link href="{% static 'https://fonts.googleapis.com/css?family=Roboto' %}" rel="stylesheet">
@@ -59,12 +59,26 @@
             }
            .btn {
                 border: none; /* Remove borders */
-                color: white; /* Add a text color */
+                color: black; /* Add a text color */
                 padding: 14px 28px; /* Add some padding */
                 cursor: pointer; /* Add a pointer cursor on mouse-over */
                  }
             .info {background-color: #2196F3;} /* Blue */
             .info:hover {background: #0b7dda;}
+
+            MESSAGE_TAGS = {
+                 messages.ERROR: 'danger'
+                }
+            .messages{
+             font-size:30px;
+             color:blue;
+            }
+            footer{
+                  text-align: center;
+                  margin-top: 25px;
+                  line-height: 25px;
+                  background-color: rgba(30, 30, 30, 0.97);
+                }
     </style>
 </head>
 
@@ -75,16 +89,16 @@
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
         <span class="icon-bar"></span><span class="icon-bar"></span>
       </button>
-        <a class="navbar-brand" href="#">INSTACLONE</a>
+        <a class="navbar-brand" href="#">INSTAGRAM</a>
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav navbar-right">
             <li class="active"><a href="#header">HOME</a></li>
-            <li><a href="#SEARCH">SEARCH</a></li>
             <li><a href="#GALLERY">GALLERY</a></li>
             <li><a href="#FOLLOWING">FOLLOWING</a></li>
             <li><a href="#PROFILE">PROFILE</a></li>
             <li><a href="#STORY">STORY</a></li>
+            <li><a href="{% url 'logout' %}">LOGOUT</a></li>
             <li>
             <section id="CREATE POST">
             <form method="post" action="/post/" align="center">
@@ -100,6 +114,13 @@
 
 
   <div class="head">
+         {% if messages %}
+            <ul class="messages">
+            {% for message in messages %}
+            <li {% if message.tags %}class="{{ message.tags }}"{% endif %} >{{ message }} </li>
+            {% endfor %}
+            </ul>
+        {% endif %}
   {% for post in posts reversed %}
         <h3 align="center"> Posted by: {{ post.user.username }} </h3>
         <p align="center">[{{ post.created_on }}]</p>
@@ -113,7 +134,7 @@
               {% csrf_token %}
               <input type="hidden" name="post" value="{{ post.id }}" />
                 {% if post.has_liked %}
-                <input type="submit" class="btn btn primary" value="Unlike" style="border-radius:30px;">
+                <input type="submit" class="btn btn-default" value="Unlike" style="border-radius:30px;">
                 {% else %}
                 <input type="submit" class="btn info" value="Like" style="border-radius:30px;">
                 {% endif %}
@@ -130,13 +151,29 @@
             </form>
         </div>
 
-        <div align="center">
-            {% for comment in post.comments %}
-                <p><b>{{ comment.user.username }} [{{ comment.created_on }}]:</b> {{ comment.comment_text }}</p>
-            {% endfor %}
+        <div>
+              {% for comment in post.comments %}
+                    <p><b>{{ comment.user.username }} [{{ comment.created_on }}]:</b> {{ comment.comment_text }}</p>
+                    <form method="POST" action="/upvote/" align="center">
+                      {% csrf_token %}
+                        <input type="hidden" name="id" value="{{ comment.id }}" >
+                        Upvotes:{{ comment.upvote_number }}
+                        <input type="submit" class="btn btn-default" value="upvote" style="border-radius:30px;">
+                    </form><br/>
+              {% endfor %}
         </div><br/><br/>
-   {% endfor %}
+  {% endfor %}
   </div>
  </div>
+   <!--footer starts-->
+     <footer>
+         <span style="color:grey">INSTAGRAM</span>
+         <button type="button" class="btn btn-link">Home</button>
+         <button type="button" class="btn btn-link">Search</button>
+         <button type="button" class="btn btn-link">Profile</button>
+         <button type="button" class="btn btn-link">Stories</button>
+         <button type="button" class="btn btn-link">Logout</button>
+     </footer>
+       <!--footer ends-->
 </body>
 </html>

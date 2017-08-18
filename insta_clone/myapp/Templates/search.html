@@ -1,0 +1,39 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>search</title>
+    <style>
+        div{
+          top-margin:400px;
+          text-align:center;
+          font-family:'Londrina Shadow', cursive;
+          font-size:40px;
+          color:black;
+        }
+        h1{
+         font-size:70px;
+          font-family:'Londrina Shadow', cursive;
+        }
+        input[type="text" name="caption"]{
+           width:200px;
+           height: 30px;
+        }
+    </style>
+</head>
+<body style="background-image: url('{% static "/insta_clone/img/new2.jpg"%}')";>
+ <div>
+     <form method="post" align="center">
+            {% csrf_token %}
+            <div align="center"><br/>
+                <label for="username">Enter username here</label>
+                <input type ="search" type="text" name="username" value={{ username }}>
+                </label>
+                {{form}}<!--field for search-->
+                <input type="submit" class="btn" style="width:24%; color:black; border-radius:10px;" value="Search">
+            </div>
+            <br>
+     </form>
+ </div>
+</body>

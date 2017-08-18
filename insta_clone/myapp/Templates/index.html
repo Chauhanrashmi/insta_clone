@@ -117,10 +117,21 @@
         .head{
              text-align:justify;
         }
-    </style>
+
+        MESSAGE_TAGS = {
+         messages.ERROR: 'danger',
+         color: 'red',
+        }
+        li{
+         font-size:30px;
+         color:red;
+        }
+
+   </style>
 </head>
 
 <body id="bg" align="center" >
+
   <div class="head" align="center">
       <img src="{% static "/insta_clone/img/insta4.png" %}" /width="150px" height="150px" align="middle">
 
@@ -136,6 +147,14 @@
           <DIV class="decoline">
           <div class="d-line" > </div>  &#x2666; <div class="d-line"> </div>
         </DIV>
+
+        {% if messages %}
+            <ul class="messages">
+            {% for message in messages %}
+            <li {% if message.tags %}class="{{ message.tags }}"{% endif %} >{{ message }} </li>
+            {% endfor %}
+            </ul>
+        {% endif %}
         <form method="post" align="center">
             {% csrf_token %}
             <div align="center"><br/>

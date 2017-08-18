@@ -62,8 +62,16 @@
                 cursor: pointer;                     /* Add a pointer cursor on mouse-over */
                 background-color:transparent;
                 }
-            .info {background-color: #2196F3;} /* Blue */
+            .info {background-color: #2196F3;}
             .info:hover {background: #0b7dda;}
+
+             MESSAGE_TAGS = {
+             messages.ERROR: 'danger'
+            }
+          li{
+         font-size:20px;
+         color:red;
+        }
 
     </style>
 </head>
@@ -73,7 +81,13 @@
             <h1> Instagram</h1>
             <h3>Log In</h3>
     </div>
-
+          {% if messages %}
+            <ul class="messages">
+            {% for message in messages %}
+            <li {% if message.tags %}class="{{ message.tags }}"{% endif %} >{{ message }} </li>
+            {% endfor %}
+            </ul>
+        {% endif %}
           <div align="center">
               <form method="post">
                   {% csrf_token %}
